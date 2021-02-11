@@ -6,6 +6,41 @@ public class RStack {
     public static void main(String[] args) {
         boolean isDuplicateBracket = rajendra.duplicate("(a + b) + ((c + d))");
         System.out.println("Does Duplicate exist " + isDuplicateBracket);
+        boolean bal = rajendra.balanceBracket("[(a + b) + {(c + d) * (e / f)}]");
+        System.out.println("Is bracket is balance " + bal);
+    }
+
+    private boolean balanceBracket(String query) {
+        Stack<Character> s = new Stack<>();
+        for (int i = 0; i < query.length(); i++) {
+            char ch = query.charAt(i);
+            if (ch == '[' || ch == '{' || ch == '(') {
+                s.push(ch);
+            } else if (ch == ')') {
+                return handleBracket(s, '(');
+            }
+            else if (ch == '[') {
+                return handleBracket(s, ']');
+            }
+            else if (ch == '{') {
+                return handleBracket(s, '}');
+            }
+
+        }
+        return false;
+    }
+
+    private boolean handleBracket(Stack<Character> s, char ch) {
+        if (s.isEmpty()) {
+            return false;
+        } else if (s.peek() != ch) {
+            return false;
+        } else {
+            s.pop();
+            return true;
+        }
+
+
     }
 
     private boolean duplicate(String query) {
