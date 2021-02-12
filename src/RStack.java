@@ -8,6 +8,37 @@ public class RStack {
         System.out.println("Does Duplicate exist " + isDuplicateBracket);
         boolean bal = rajendra.balanceBracket("[(a + b) + {(c + d) * (e / f)}]");
         System.out.println("Is bracket is balance " + bal);
+        int[] input = {2, 5, 9, 3, 1, 12, 6, 8, 7};
+        printArray(rajendra.nextGreaterElementByStack(input));
+
+    }
+
+
+    public static void printArray(int[] data) {
+        for (int i = 0; i < data.length; i++) {
+            System.out.print(data[i] + " ");
+        }
+    }
+
+    private int[] nextGreaterElementByStack(int[] input) {
+        //  {2, 5, 9, 3, 1, 12, 6, 8, 7}
+        int[] nextGreater = new int[input.length]; // create the array equal length of input array
+        Stack<Integer> s = new Stack<>();
+        s.push(input[input.length - 1]);  // push the first element to compare with preceding element.
+        nextGreater[input.length - 1] = -1; //  next greater of right is always -1
+        for (int i = input.length - 2; i >= 0; i--) { // start the iteration from second last,
+// because we have to compare from  last and second last.
+//   pop all the element from the stack, who next greater is not possible
+            while (!s.isEmpty() && input[i] > s.peek()) {
+                s.pop();
+            }
+            if (s.isEmpty())
+                nextGreater[i] = -1; // if the stack is empty than the next greater of element is not possible
+            else // stack  current element is next greater element
+                nextGreater[i] = s.peek();
+            s.push(input[i]);
+        }
+        return nextGreater;
     }
 
     private boolean balanceBracket(String query) {
@@ -18,11 +49,9 @@ public class RStack {
                 s.push(ch);
             } else if (ch == ')') {
                 return handleBracket(s, '(');
-            }
-            else if (ch == '[') {
+            } else if (ch == '[') {
                 return handleBracket(s, ']');
-            }
-            else if (ch == '{') {
+            } else if (ch == '{') {
                 return handleBracket(s, '}');
             }
 
